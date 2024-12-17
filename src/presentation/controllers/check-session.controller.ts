@@ -1,7 +1,8 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Headers, Inject, Post } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CheckSessionUseCase } from '@src/data/use-cases/check-session/check-session.use-case';
 import { ICheckSessionUseCase } from '@src/data/use-cases/check-session/check-session.use-case.dto';
+import { AuthGuard } from '../decorators/auth.decorator';
 
 @Controller()
 @ApiTags('Authentication')
@@ -11,12 +12,14 @@ export class CheckSessionController {
     private readonly checkSessionUseCase: ICheckSessionUseCase,
   ) {}
 
+  @AuthGuard()
   @Post('/check-session')
-  @ApiBody({ type: ICheckSessionUseCase.InputSession })
   @ApiResponse({ type: ICheckSessionUseCase.OutputSession })
   async checkSession(
-    @Body() payload: ICheckSessionUseCase.InputSession,
+    @Headers() headers: Record<string, string>,
   ): Promise<ICheckSessionUseCase.OutputSession> {
-    return this.checkSessionUseCase.execute(payload);
+    const [_, token] = headers['authorization'].split(' ');
+
+    return this.checkSessionUseCase.execute({ token });
   }
 }
