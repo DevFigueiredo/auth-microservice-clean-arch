@@ -5,15 +5,18 @@ import { AuthRepository } from '@src/infra/db/auth/auth.repository';
 import { AuthController } from '@src/presentation/controllers/auth.controller';
 import { PrismaDb } from '../config/prisma/prisma-db.config';
 import { BCryptPassword } from '@src/utils/bcrypt-password.utils';
+import { CheckSessionUseCase } from '@src/data/use-cases/check-session/check-session.use-case';
+import { CheckSessionController } from '@src/presentation/controllers/check-session.controller';
 
 @Module({
   imports: [],
-  controllers: [AuthController],
+  controllers: [AuthController, CheckSessionController],
   providers: [
     AuthUseCase,
     AuthRepository,
     JwtTokenAdapter,
     PrismaDb,
+    CheckSessionUseCase,
     { provide: BCryptPassword, useValue: new BCryptPassword() },
     {
       provide: JwtTokenAdapter,

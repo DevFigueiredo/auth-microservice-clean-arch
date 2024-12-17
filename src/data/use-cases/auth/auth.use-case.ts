@@ -13,7 +13,9 @@ export class AuthUseCase implements IAuthUseCase {
     @Inject(JwtTokenAdapter) private readonly tokenAdapter: ITokenAdapter,
   ) {}
 
-  async execute(data: IAuthUseCase.Input): Promise<IAuthUseCase.Output> {
+  async execute(
+    data: IAuthUseCase.InputLogin,
+  ): Promise<IAuthUseCase.OutputLogin> {
     new AuthUseCaseValidator().validate(data);
     const user = await this.authRepository.login({
       email: data.email,

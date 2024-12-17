@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export interface IAuthUseCase {
-  execute(data: IAuthUseCase.Input): Promise<IAuthUseCase.Output>;
+  execute(data: IAuthUseCase.InputLogin): Promise<IAuthUseCase.OutputLogin>;
 }
 
 export namespace IAuthUseCase {
-  export class Input {
+  export class InputLogin {
     @ApiProperty({
       example: 'admin@admin.com.br',
     })
@@ -15,7 +15,7 @@ export namespace IAuthUseCase {
     })
     password: string;
   }
-  export class Output {
+  export class OutputLogin {
     @ApiProperty()
     token: string;
   }

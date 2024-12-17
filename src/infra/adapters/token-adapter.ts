@@ -1,5 +1,3 @@
-// JwtTokenAdapter.ts
-
 import { ITokenAdapter } from '@src/data/protocols/adapters/token-adapter.interface';
 import * as jwt from 'jsonwebtoken';
 
@@ -14,9 +12,9 @@ export class JwtTokenAdapter implements ITokenAdapter {
     return jwt.sign(payload, this.secretKey, { expiresIn });
   }
 
-  verifyToken(token: string): object | null {
+  verifyToken<T>(token: string): T | null {
     try {
-      return jwt.verify(token, this.secretKey) as object;
+      return jwt.verify(token, this.secretKey) as T;
     } catch (error) {
       console.error('Token inválido:', error);
       return null;

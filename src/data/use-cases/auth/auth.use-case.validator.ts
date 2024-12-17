@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { IAuthUseCase } from './auth.use-case.dto';
 
 export class AuthUseCaseValidator extends BaseValidator<
-  Partial<IAuthUseCase.Input>
+  Partial<IAuthUseCase.InputLogin>
 > {
   protected schema = z.object({
     email: z.string(),
