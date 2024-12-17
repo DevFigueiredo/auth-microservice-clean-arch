@@ -1,9 +1,15 @@
+import '../infra/observability/telemetry/telemetry';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import logger from '@src/infra/observability/logger/logger';
+import { useRequestLogging } from '@src/utils/use-request.logging';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger,
+    bufferLogs: true,
+  });
   const config = new DocumentBuilder()
     .setTitle('Authentication Microservice')
     .setDescription('The authentication API')
@@ -22,6 +28,8 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);
+
+  // useRequestLogging(app.getHttpAdapter().getInstance());
 
   await app.listen(3001);
 }

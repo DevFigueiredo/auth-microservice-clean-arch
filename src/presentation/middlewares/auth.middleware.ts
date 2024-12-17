@@ -19,6 +19,7 @@ export class AuthMiddleware implements CanActivate {
     if (!authHeader) {
       throw new HttpException('No token provided', HttpStatus.UNAUTHORIZED);
     }
+
     const [bearer, token] = authHeader.split(' ');
     if (!bearer) {
       throw new UnauthorizedException('Invalid Token');

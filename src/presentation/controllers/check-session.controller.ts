@@ -1,4 +1,11 @@
-import { Controller, Headers, Inject, Post } from '@nestjs/common';
+import {
+  Controller,
+  Headers,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Post,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CheckSessionUseCase } from '@src/data/use-cases/check-session/check-session.use-case';
 import { ICheckSessionUseCase } from '@src/data/use-cases/check-session/check-session.use-case.dto';
@@ -15,6 +22,7 @@ export class CheckSessionController {
   @AuthGuard()
   @Post('/check-session')
   @ApiResponse({ type: ICheckSessionUseCase.OutputSession })
+  @HttpCode(HttpStatus.OK)
   async checkSession(
     @Headers() headers: Record<string, string>,
   ): Promise<ICheckSessionUseCase.OutputSession> {
