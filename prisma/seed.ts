@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import * as seeds from './seeds';
+import { BCryptPassword } from '../src/utils/bcrypt-password.utils';
 
 const prisma = new PrismaClient({
   log: [{ level: 'error', emit: 'event' }],
@@ -7,8 +7,23 @@ const prisma = new PrismaClient({
 
 async function main(): Promise<void> {
   await prisma.$transaction(async (transaction) => {
-    await transaction.user.createMany({
-      data: await seeds.users(),
+    const password = await new BCryptPassword().hashPassword(
+      'adminPassword123',
+    );
+    await transaction.user.upsert({
+      create: {
+        email: 'admin@admin.com.br',
+        name: 'Admin User',
+        password,
+      },
+      where: {
+        email: 'admin@admin.com.br',
+      },
+      update: {
+        email: 'admin@admin.com.br',
+        name: 'Admin User',
+        password,
+      },
     });
   });
 }

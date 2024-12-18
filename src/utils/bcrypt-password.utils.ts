@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IPasswordUtils } from '@src/data/protocols/utils/password.util';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class BCryptPassword implements IPasswordUtils {
